@@ -1,0 +1,121 @@
+{
+  "entities": {
+    "tutor": {
+      "title": "Tutor",
+      "description": "The tutor managing students.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    },
+    "student": {
+      "title": "Student",
+      "description": "Student profile managed by a tutor.",
+      "type": "object",
+      "properties": {
+        "tutorId": { "type": "string" },
+        "fullName": { "type": "string" },
+        "studentCode": { "type": "string" },
+        "subject": { "type": "string", "enum": ["Vật lí", "Toán"] },
+        "grade": { "type": "integer" },
+        "school": { "type": "string" },
+        "targetScore": { "type": "number" },
+        "currentLevel": { "type": "number" },
+        "sessionsPerWeek": { "type": "integer" },
+        "startDate": { "type": "string", "format": "date-time" },
+        "examDate": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["On Track", "Delayed", "Accelerating"] },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["tutorId", "fullName", "subject", "targetScore"]
+    },
+    "studyPlan": {
+      "title": "Study Plan",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "totalWeeks": { "type": "integer" },
+        "progress": { "type": "number" }
+      }
+    },
+    "studyStage": {
+      "title": "Study Stage",
+      "type": "object",
+      "properties": {
+        "planId": { "type": "string" },
+        "name": { "type": "string" },
+        "order": { "type": "integer" },
+        "durationWeeks": { "type": "integer" },
+        "isCompleted": { "type": "boolean" }
+      }
+    },
+    "studySession": {
+      "title": "Study Session",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "topic": { "type": "string" },
+        "objective": { "type": "string" },
+        "content": { "type": "string" },
+        "homework": { "type": "string" },
+        "feedback": { "type": "string" },
+        "understandingLevel": { "type": "integer" },
+        "activeLevel": { "type": "integer" },
+        "nextSteps": { "type": "string" }
+      }
+    },
+    "assignment": {
+      "title": "Assignment",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "title": { "type": "string" },
+        "dueDate": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["Pending", "Submitted", "Checked"] },
+        "score": { "type": "number" }
+      }
+    },
+    "test": {
+      "title": "Mini Test",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "title": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "correctAnswers": { "type": "integer" },
+        "totalQuestions": { "type": "integer" },
+        "score": { "type": "number" },
+        "timeSpent": { "type": "integer" }
+      }
+    },
+    "mistakeLog": {
+      "title": "Mistake Log",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "topic": { "type": "string" },
+        "type": { "type": "string", "enum": ["Kiến thức", "Công thức", "Tư duy", "Biến đổi", "Tính toán", "Đơn vị", "Điều kiện", "Đọc đề", "Bấm máy"] },
+        "description": { "type": "string" },
+        "severity": { "type": "integer" }
+      }
+    }
+  },
+  "firestore": {
+    "/tutors/{tutorId}": { "schema": "tutor", "description": "Tutor user profiles" },
+    "/students/{studentId}": { "schema": "student", "description": "Students managed by tutors" },
+    "/students/{studentId}/studyPlans/{planId}": { "schema": "studyPlan", "description": "High-level study plans" },
+    "/students/{studentId}/studyPlans/{planId}/stages/{stageId}": { "schema": "studyStage", "description": "Stages of a study plan" },
+    "/students/{studentId}/sessions/{sessionId}": { "schema": "studySession", "description": "Individual tutoring sessions" },
+    "/students/{studentId}/assignments/{assignmentId}": { "schema": "assignment", "description": "Homework and tasks" },
+    "/students/{studentId}/tests/{testId}": { "schema": "test", "description": "Mini tests and exams" },
+    "/students/{studentId}/mistakes/{mistakeId}": { "schema": "mistakeLog", "description": "Log of common mistakes" }
+  }
+}
